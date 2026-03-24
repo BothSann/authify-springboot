@@ -2,6 +2,11 @@ server:
   port: 8080
 
 spring:
+  config:
+    # Load .env from the project root as a properties file.
+    # "optional:" means the app still starts if the file is missing (e.g., on CI/CD
+    # where environment variables are injected directly into the process).
+    import: optional:file:.env[.properties]
   datasource:
     url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:authify_db}
     username: ${POSTGRES_USER:authify_user}
@@ -15,6 +20,7 @@ spring:
       max-lifetime: 1800000
 
   jpa:
+    open-in-view: false   # Disable open-in-view — REST APIs don't render views
     hibernate:
       ddl-auto: update
     show-sql: true

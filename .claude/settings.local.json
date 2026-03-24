@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(docker compose:*)"
+      "Bash(docker compose:*)",
+      "Bash(./mvnw spring-boot:run)",
+      "Bash(java -version)",
+      "Bash(javac -version)",
+      "Bash(./mvnw -version)",
+      "Bash(./mvnw clean:*)"
     ]
   }
 }
