@@ -41,3 +41,6 @@ docs/
 
 # Specification files
 authify-project-spec.md
+
+# Claude's plan
+.claude/plans
