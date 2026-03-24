@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:authify_db}
+    username: ${POSTGRES_USER:authify_user}
+    password: ${POSTGRES_PASSWORD:authify_secret_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+application:
+  name: authify
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      access-token-expiration: 900000       # 15 minutes in ms
+      refresh-token-expiration: 604800000   # 7 days in ms
+  frontend-url: ${FRONTEND_URL:http://localhost:3000}
