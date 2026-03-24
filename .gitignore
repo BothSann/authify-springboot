@@ -34,3 +34,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Documentation
+docs/
+
+
+# Specification files
+authify-project-spec.md
