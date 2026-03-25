@@ -6,7 +6,11 @@
       "Bash(java -version)",
       "Bash(javac -version)",
       "Bash(./mvnw -version)",
-      "Bash(./mvnw clean:*)"
+      "Bash(./mvnw clean:*)",
+      "Bash(find /c/Users/thann/Desktop/authify/src/main/java/com/bothsann/authify -type f -name *.java)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c \"taskkill /PID 31560 /F\")"
     ]
   }
 }

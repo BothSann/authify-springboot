@@ -32,8 +32,10 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    # Empty defaults allow the app to start without Gmail credentials.
+    # EmailServiceImpl detects the blank value and skips sending (logs a warning instead).
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
