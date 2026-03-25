@@ -1,7 +1,7 @@
 package com.bothsann.authify.user.dto;
 
-import com.bothsann.authify.user.Role;
-import com.bothsann.authify.user.User;
+import com.bothsann.authify.user.entity.Role;
+import com.bothsann.authify.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

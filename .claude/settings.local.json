@@ -11,7 +11,14 @@
       "Bash(netstat -ano)",
       "Bash(taskkill:*)",
       "Bash(cmd //c \"taskkill /PID 31560 /F\")",
-      "Bash(./mvnw compile:*)"
+      "Bash(./mvnw compile:*)",
+      "Bash(BASE=\"C:/Users/thann/Desktop/authify/src/main/java/com/bothsann/authify\")",
+      "Bash(mkdir -p \"$BASE/user/entity\" \"$BASE/user/repository\" \"$BASE/user/service/impl\" \"$BASE/user/controller\")",
+      "Bash(mkdir -p \"$BASE/token/entity\" \"$BASE/token/repository\" \"$BASE/token/service/impl\")",
+      "Bash(mkdir -p \"$BASE/passwordreset/entity\" \"$BASE/passwordreset/repository\" \"$BASE/passwordreset/service\")",
+      "Bash(mkdir -p \"$BASE/auth/controller\" \"$BASE/auth/service/impl\")",
+      "Bash(sed -i 's/<java.version>25<\\\\/java.version>/<java.version>24<\\\\/java.version>/g' pom.xml)",
+      "Bash(mvn compile:*)"
     ]
   }
 }
