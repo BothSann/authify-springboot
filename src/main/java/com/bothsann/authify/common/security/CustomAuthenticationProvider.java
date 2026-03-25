@@ -93,11 +93,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         final String email = authentication.getName();
         final String rawPassword = authentication.getCredentials().toString();
 
-        // loadUserByUsername throws UsernameNotFoundException if the email is not found.
-        // Spring Security catches that and wraps it in a BadCredentialsException
-        // before returning to the caller — so the client never learns whether the
-        // email or the password was wrong (prevents user enumeration).
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        // Catch UsernameNotFoundException and convert it to BadCredentialsException.
+        // This prevents user enumeration: both "email not found" and "wrong password"
+        // return the same generic 401 with the same message — an attacker cannot tell
+        // which one occurred. This mirrors what Spring's own DaoAuthenticationProvider
+        // does internally via its hideUserNotFoundExceptions flag.
+        UserDetails userDetails;
+        try {
+            userDetails = userDetailsService.loadUserByUsername(email);
+        } catch (org.springframework.security.core.userdetails.UsernameNotFoundException ex) {
+            log.warn("Login attempt for unregistered email: {}", email);
+            throw new BadCredentialsException("Invalid email or password");
+        }
 
         // BCrypt.matches() rehashes the raw password and compares to the stored hash.
         // This is intentionally slow (BCrypt strength 12) to resist brute-force.
