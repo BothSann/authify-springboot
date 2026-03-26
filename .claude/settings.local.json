@@ -19,7 +19,8 @@
       "Bash(mkdir -p \"$BASE/auth/controller\" \"$BASE/auth/service/impl\")",
       "Bash(sed -i 's/<java.version>25<\\\\/java.version>/<java.version>24<\\\\/java.version>/g' pom.xml)",
       "Bash(mvn compile:*)",
-      "Bash(mvn --version)"
+      "Bash(mvn --version)",
+      "Bash(cd:*)"
     ]
   }
 }

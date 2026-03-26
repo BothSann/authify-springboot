@@ -38,9 +38,9 @@ public class AuthController {
      * was created as a result of this request.
      */
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<AuthResponse>> register(
-            @Valid @RequestBody RegisterRequest request) {
-        AuthResponse response = authService.register(request);
+    public ResponseEntity<ApiResponse<AuthResponseDto>> register(
+            @Valid @RequestBody RegisterRequestDto request) {
+        AuthResponseDto response = authService.register(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.of(201, response, "Registration successful"));
@@ -50,9 +50,9 @@ public class AuthController {
      * Authenticates a user and returns a token pair.
      */
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthResponse>> login(
-            @Valid @RequestBody LoginRequest request) {
-        AuthResponse response = authService.login(request);
+    public ResponseEntity<ApiResponse<AuthResponseDto>> login(
+            @Valid @RequestBody LoginRequestDto request) {
+        AuthResponseDto response = authService.login(request);
         return ResponseEntity.ok(ApiResponse.success(response, "Login successful"));
     }
 
@@ -63,9 +63,9 @@ public class AuthController {
      * The client must use the new refresh token returned here for the next refresh.
      */
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
-            @Valid @RequestBody RefreshTokenRequest request) {
-        AuthResponse response = authService.refreshToken(request);
+    public ResponseEntity<ApiResponse<AuthResponseDto>> refreshToken(
+            @Valid @RequestBody RefreshTokenRequestDto request) {
+        AuthResponseDto response = authService.refreshToken(request);
         return ResponseEntity.ok(ApiResponse.success(response, "Token refreshed successfully"));
     }
 
@@ -77,7 +77,7 @@ public class AuthController {
      */
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(
-            @Valid @RequestBody RefreshTokenRequest request) {
+            @Valid @RequestBody RefreshTokenRequestDto request) {
         authService.logout(request);
         return ResponseEntity.ok(ApiResponse.success("Logged out successfully"));
     }
@@ -91,7 +91,7 @@ public class AuthController {
      */
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiResponse<Void>> forgotPassword(
-            @Valid @RequestBody ForgotPasswordRequest request) {
+            @Valid @RequestBody ForgotPasswordRequestDto request) {
         passwordResetService.initiatePasswordReset(request);
         // Return the same message whether or not the email was found — no enumeration
         return ResponseEntity.ok(ApiResponse.success(
@@ -106,7 +106,7 @@ public class AuthController {
      */
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse<Void>> resetPassword(
-            @Valid @RequestBody PasswordResetRequest request) {
+            @Valid @RequestBody PasswordResetRequestDto request) {
         passwordResetService.resetPassword(request);
         return ResponseEntity.ok(ApiResponse.success("Password updated successfully"));
     }

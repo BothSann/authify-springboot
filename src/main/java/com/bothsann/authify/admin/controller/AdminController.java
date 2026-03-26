@@ -1,7 +1,7 @@
 package com.bothsann.authify.admin.controller;
 
 import com.bothsann.authify.common.response.ApiResponse;
-import com.bothsann.authify.user.dto.UserResponse;
+import com.bothsann.authify.user.dto.UserResponseDto;
 import com.bothsann.authify.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class AdminController {
     /**
      * Returns a list of all registered users.
      *
-     * <p>Passwords are never included — the response uses {@link UserResponse} which
+     * <p>Passwords are never included — the response uses {@link UserResponseDto} which
      * is a safe DTO that omits the password field.
      */
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
-        List<UserResponse> users = userService.getAllUsers();
+    public ResponseEntity<ApiResponse<List<UserResponseDto>>> getAllUsers() {
+        List<UserResponseDto> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success(users,
                 "Retrieved " + users.size() + " user(s)"));
     }

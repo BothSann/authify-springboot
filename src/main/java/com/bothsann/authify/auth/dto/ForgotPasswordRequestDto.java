@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
  * the endpoint still returns 200 OK — this prevents user enumeration attacks where an
  * attacker could probe which emails are registered by observing the response status.
  */
-public record ForgotPasswordRequest(
+public record ForgotPasswordRequestDto(
 
         @NotBlank(message = "Email is required")
         @Email(message = "Must be a valid email address")

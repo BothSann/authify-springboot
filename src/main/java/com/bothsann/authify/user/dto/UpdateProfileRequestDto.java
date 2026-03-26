@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
  * would require separate flows (email verification, current-password confirmation)
  * that are out of scope for this version of Authify.
  */
-public record UpdateProfileRequest(
+public record UpdateProfileRequestDto(
 
         @NotBlank(message = "First name is required")
         @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")

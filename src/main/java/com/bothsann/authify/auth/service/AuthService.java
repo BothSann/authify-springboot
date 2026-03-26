@@ -1,9 +1,9 @@
 package com.bothsann.authify.auth.service;
 
-import com.bothsann.authify.auth.dto.AuthResponse;
-import com.bothsann.authify.auth.dto.LoginRequest;
-import com.bothsann.authify.auth.dto.RefreshTokenRequest;
-import com.bothsann.authify.auth.dto.RegisterRequest;
+import com.bothsann.authify.auth.dto.AuthResponseDto;
+import com.bothsann.authify.auth.dto.LoginRequestDto;
+import com.bothsann.authify.auth.dto.RefreshTokenRequestDto;
+import com.bothsann.authify.auth.dto.RegisterRequestDto;
 
 /**
  * Core authentication operations: register, login, token refresh, and logout.
@@ -23,7 +23,7 @@ public interface AuthService {
      * @return a token pair for the newly created user
      * @throws com.bothsann.authify.common.exception.UserAlreadyExistsException if the email is taken
      */
-    AuthResponse register(RegisterRequest request);
+    AuthResponseDto register(RegisterRequestDto request);
 
     /**
      * Authenticates a user with email and password and returns a fresh token pair.
@@ -35,7 +35,7 @@ public interface AuthService {
      * @return a token pair for the authenticated user
      * @throws org.springframework.security.authentication.BadCredentialsException if credentials are wrong
      */
-    AuthResponse login(LoginRequest request);
+    AuthResponseDto login(LoginRequestDto request);
 
     /**
      * Validates the provided refresh token, rotates it (issues a new one), and returns
@@ -46,7 +46,7 @@ public interface AuthService {
      * @throws com.bothsann.authify.common.exception.InvalidTokenException  if the token is not found
      * @throws com.bothsann.authify.common.exception.TokenExpiredException if the token has expired
      */
-    AuthResponse refreshToken(RefreshTokenRequest request);
+    AuthResponseDto refreshToken(RefreshTokenRequestDto request);
 
     /**
      * Revokes the provided refresh token, effectively ending the user's session.
@@ -58,5 +58,5 @@ public interface AuthService {
      * @param request the refresh token to revoke
      * @throws com.bothsann.authify.common.exception.InvalidTokenException if the token is not found
      */
-    void logout(RefreshTokenRequest request);
+    void logout(RefreshTokenRequestDto request);
 }

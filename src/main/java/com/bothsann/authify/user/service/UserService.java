@@ -1,7 +1,7 @@
 package com.bothsann.authify.user.service;
 
-import com.bothsann.authify.user.dto.UpdateProfileRequest;
-import com.bothsann.authify.user.dto.UserResponse;
+import com.bothsann.authify.user.dto.UpdateProfileRequestDto;
+import com.bothsann.authify.user.dto.UserResponseDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,10 +19,10 @@ public interface UserService {
      * Returns the profile of the currently authenticated user.
      *
      * @param email the authenticated user's email (from the JWT subject)
-     * @return the user's profile as a {@link UserResponse} (no password)
+     * @return the user's profile as a {@link UserResponseDto} (no password)
      * @throws com.bothsann.authify.common.exception.ResourceNotFoundException if not found
      */
-    UserResponse getCurrentUser(String email);
+    UserResponseDto getCurrentUser(String email);
 
     /**
      * Updates the first and last name of the currently authenticated user.
@@ -32,14 +32,14 @@ public interface UserService {
      * @return the updated profile
      * @throws com.bothsann.authify.common.exception.ResourceNotFoundException if not found
      */
-    UserResponse updateCurrentUser(String email, UpdateProfileRequest request);
+    UserResponseDto updateCurrentUser(String email, UpdateProfileRequestDto request);
 
     /**
      * Returns all registered users. Admin-only operation.
      *
      * @return list of all user profiles (no passwords)
      */
-    List<UserResponse> getAllUsers();
+    List<UserResponseDto> getAllUsers();
 
     /**
      * Deletes a user by their UUID. Admin-only operation.

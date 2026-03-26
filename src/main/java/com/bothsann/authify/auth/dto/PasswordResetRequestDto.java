@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
  * <p>The {@code newPassword} must meet the same strength requirements as during
  * registration. It is BCrypt-hashed in {@code PasswordResetService} before being saved.
  */
-public record PasswordResetRequest(
+public record PasswordResetRequestDto(
 
         @NotBlank(message = "Reset token is required")
         String token,

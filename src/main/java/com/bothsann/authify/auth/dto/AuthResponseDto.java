@@ -14,7 +14,7 @@ package com.bothsann.authify.auth.dto;
  * <p>The client should store the refresh token securely (e.g., in an HttpOnly cookie
  * or secure storage) — never in localStorage where XSS can reach it.
  */
-public record AuthResponse(
+public record AuthResponseDto(
 
         /** Short-lived JWT for authenticating API requests. */
         String accessToken,

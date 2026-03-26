@@ -1,9 +1,9 @@
 package com.bothsann.authify.auth.service.impl;
 
-import com.bothsann.authify.auth.dto.AuthResponse;
-import com.bothsann.authify.auth.dto.LoginRequest;
-import com.bothsann.authify.auth.dto.RefreshTokenRequest;
-import com.bothsann.authify.auth.dto.RegisterRequest;
+import com.bothsann.authify.auth.dto.AuthResponseDto;
+import com.bothsann.authify.auth.dto.LoginRequestDto;
+import com.bothsann.authify.auth.dto.RefreshTokenRequestDto;
+import com.bothsann.authify.auth.dto.RegisterRequestDto;
 import com.bothsann.authify.auth.service.AuthService;
 import com.bothsann.authify.exception.ResourceNotFoundException;
 import com.bothsann.authify.exception.UserAlreadyExistsException;
@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponseDto register(RegisterRequestDto request) {
         // Fail fast if the email is already taken
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new UserAlreadyExistsException(
@@ -91,11 +91,11 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return new AuthResponse(accessToken, refreshToken.getToken());
+        return new AuthResponseDto(accessToken, refreshToken.getToken());
     }
 
     @Override
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponseDto login(LoginRequestDto request) {
         // Delegate credential verification to CustomAuthenticationProvider via ProviderManager.
         // This call throws BadCredentialsException if email/password are wrong —
         // that exception propagates to GlobalExceptionHandler → 401.
@@ -114,12 +114,12 @@ public class AuthServiceImpl implements AuthService {
         // createRefreshToken handles deleting any existing token for this user first
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return new AuthResponse(accessToken, refreshToken.getToken());
+        return new AuthResponseDto(accessToken, refreshToken.getToken());
     }
 
     @Override
     @Transactional
-    public AuthResponse refreshToken(RefreshTokenRequest request) {
+    public AuthResponseDto refreshToken(RefreshTokenRequestDto request) {
         // Throws InvalidTokenException if token is not in the DB
         RefreshToken refreshToken = refreshTokenService.findByToken(request.refreshToken());
 
@@ -134,12 +134,12 @@ public class AuthServiceImpl implements AuthService {
 
         log.debug("Token refreshed for user: {}", newRefreshToken.getUser().getEmail());
 
-        return new AuthResponse(newAccessToken, newRefreshToken.getToken());
+        return new AuthResponseDto(newAccessToken, newRefreshToken.getToken());
     }
 
     @Override
     @Transactional
-    public void logout(RefreshTokenRequest request) {
+    public void logout(RefreshTokenRequestDto request) {
         // Throws InvalidTokenException if token is not found — prevents silent no-ops
         RefreshToken refreshToken = refreshTokenService.findByToken(request.refreshToken());
 

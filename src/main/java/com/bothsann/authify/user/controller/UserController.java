@@ -1,8 +1,8 @@
 package com.bothsann.authify.user.controller;
 
 import com.bothsann.authify.common.response.ApiResponse;
-import com.bothsann.authify.user.dto.UpdateProfileRequest;
-import com.bothsann.authify.user.dto.UserResponse;
+import com.bothsann.authify.user.dto.UpdateProfileRequestDto;
+import com.bothsann.authify.user.dto.UserResponseDto;
 import com.bothsann.authify.user.entity.User;
 import com.bothsann.authify.user.service.UserService;
 import jakarta.validation.Valid;
@@ -53,9 +53,9 @@ public class UserController {
      * identifier to load the freshest data from the database.
      */
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserResponse>> getCurrentUser(
+    public ResponseEntity<ApiResponse<UserResponseDto>> getCurrentUser(
             @AuthenticationPrincipal User currentUser) {
-        UserResponse response = userService.getCurrentUser(currentUser.getEmail());
+        UserResponseDto response = userService.getCurrentUser(currentUser.getEmail());
         return ResponseEntity.ok(ApiResponse.success(response, "User profile retrieved"));
     }
 
@@ -63,10 +63,10 @@ public class UserController {
      * Updates the currently authenticated user's first and last name.
      */
     @PutMapping("/me")
-    public ResponseEntity<ApiResponse<UserResponse>> updateCurrentUser(
+    public ResponseEntity<ApiResponse<UserResponseDto>> updateCurrentUser(
             @AuthenticationPrincipal User currentUser,
-            @Valid @RequestBody UpdateProfileRequest request) {
-        UserResponse response = userService.updateCurrentUser(currentUser.getEmail(), request);
+            @Valid @RequestBody UpdateProfileRequestDto request) {
+        UserResponseDto response = userService.updateCurrentUser(currentUser.getEmail(), request);
         return ResponseEntity.ok(ApiResponse.success(response, "Profile updated successfully"));
     }
 }

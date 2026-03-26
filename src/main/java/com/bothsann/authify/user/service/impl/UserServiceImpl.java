@@ -1,8 +1,8 @@
 package com.bothsann.authify.user.service.impl;
 
 import com.bothsann.authify.exception.ResourceNotFoundException;
-import com.bothsann.authify.user.dto.UpdateProfileRequest;
-import com.bothsann.authify.user.dto.UserResponse;
+import com.bothsann.authify.user.dto.UpdateProfileRequestDto;
+import com.bothsann.authify.user.dto.UserResponseDto;
 import com.bothsann.authify.user.entity.User;
 import com.bothsann.authify.user.repository.UserRepository;
 import com.bothsann.authify.user.service.UserService;
@@ -25,15 +25,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserResponse getCurrentUser(String email) {
+    public UserResponseDto getCurrentUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
-        return UserResponse.from(user);
+        return UserResponseDto.from(user);
     }
 
     @Override
     @Transactional
-    public UserResponse updateCurrentUser(String email, UpdateProfileRequest request) {
+    public UserResponseDto updateCurrentUser(String email, UpdateProfileRequestDto request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
 
@@ -42,14 +42,14 @@ public class UserServiceImpl implements UserService {
 
         User updated = userRepository.save(user);
         log.info("Profile updated for user: {}", email);
-        return UserResponse.from(updated);
+        return UserResponseDto.from(updated);
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
+    public List<UserResponseDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(UserResponse::from)
+                .map(UserResponseDto::from)
                 .toList();
     }
 

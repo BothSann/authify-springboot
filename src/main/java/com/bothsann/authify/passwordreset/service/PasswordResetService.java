@@ -1,7 +1,7 @@
 package com.bothsann.authify.passwordreset.service;
 
-import com.bothsann.authify.auth.dto.ForgotPasswordRequest;
-import com.bothsann.authify.auth.dto.PasswordResetRequest;
+import com.bothsann.authify.auth.dto.ForgotPasswordRequestDto;
+import com.bothsann.authify.auth.dto.PasswordResetRequestDto;
 import com.bothsann.authify.common.email.EmailService;
 import com.bothsann.authify.exception.InvalidTokenException;
 import com.bothsann.authify.exception.TokenExpiredException;
@@ -74,7 +74,7 @@ public class PasswordResetService {
      * @param request contains the user's email address
      */
     @Transactional
-    public void initiatePasswordReset(ForgotPasswordRequest request) {
+    public void initiatePasswordReset(ForgotPasswordRequestDto request) {
         Optional<User> userOpt = userRepository.findByEmail(request.email());
 
         if (userOpt.isEmpty()) {
@@ -113,7 +113,7 @@ public class PasswordResetService {
      * @throws TokenExpiredException if the token's 15-minute window has passed
      */
     @Transactional
-    public void resetPassword(PasswordResetRequest request) {
+    public void resetPassword(PasswordResetRequestDto request) {
         PasswordResetToken resetToken = passwordResetTokenRepository
                 .findByToken(request.token())
                 .orElseThrow(() -> new InvalidTokenException(

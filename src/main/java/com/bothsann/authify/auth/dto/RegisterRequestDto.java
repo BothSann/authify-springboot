@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
  * <p>All fields are validated with Jakarta Bean Validation. Violations are caught by
  * {@code GlobalExceptionHandler} and returned as a 400 response with per-field error messages.
  */
-public record RegisterRequest(
+public record RegisterRequestDto(
 
         @NotBlank(message = "Email is required")
         @Email(message = "Must be a valid email address")

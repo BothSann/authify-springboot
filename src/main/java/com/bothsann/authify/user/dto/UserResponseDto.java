@@ -15,7 +15,7 @@ import java.util.UUID;
  *
  * <p>Use the {@link #from(User)} factory method to convert an entity to this DTO.
  */
-public record UserResponse(
+public record UserResponseDto(
 
         UUID id,
         String email,
@@ -29,17 +29,17 @@ public record UserResponse(
 ) {
 
     /**
-     * Converts a {@link User} entity to a {@link UserResponse} DTO.
+     * Converts a {@link User} entity to a {@link UserResponseDto} DTO.
      *
      * <p>This static factory is the single place where the entity-to-DTO mapping is
      * defined. Callers (controllers and services) use this method rather than the
      * constructor directly, keeping the mapping logic centralized.
      *
      * @param user the entity to convert
-     * @return a {@code UserResponse} with all fields populated (excluding {@code password})
+     * @return a {@code UserResponseDto} with all fields populated (excluding {@code password})
      */
-    public static UserResponse from(User user) {
-        return new UserResponse(
+    public static UserResponseDto from(User user) {
+        return new UserResponseDto(
                 user.getId(),
                 user.getEmail(),
                 user.getFirstName(),

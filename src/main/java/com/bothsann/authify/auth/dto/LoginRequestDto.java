@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
  * {@code CustomAuthenticationProvider} loads the user and calls
  * {@code passwordEncoder.matches(raw, hashed)} to verify.
  */
-public record LoginRequest(
+public record LoginRequestDto(
 
         @NotBlank(message = "Email is required")
         @Email(message = "Must be a valid email address")
