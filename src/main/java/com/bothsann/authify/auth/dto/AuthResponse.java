@@ -1,10 +1,5 @@
 package com.bothsann.authify.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * Response body returned on successful register, login, and token refresh.
  *
@@ -19,15 +14,12 @@ import lombok.NoArgsConstructor;
  * <p>The client should store the refresh token securely (e.g., in an HttpOnly cookie
  * or secure storage) — never in localStorage where XSS can reach it.
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class AuthResponse {
+public record AuthResponse(
 
-    /** Short-lived JWT for authenticating API requests. */
-    private String accessToken;
+        /** Short-lived JWT for authenticating API requests. */
+        String accessToken,
 
-    /** Long-lived opaque token for obtaining new access tokens without re-login. */
-    private String refreshToken;
-}
+        /** Long-lived opaque token for obtaining new access tokens without re-login. */
+        String refreshToken
+
+) {}

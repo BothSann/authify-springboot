@@ -70,17 +70,17 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         // Fail fast if the email is already taken
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new UserAlreadyExistsException(
-                    "An account with email '" + request.getEmail() + "' already exists.");
+                    "An account with email '" + request.email() + "' already exists.");
         }
 
         // Hash the raw password before persisting — never store plaintext
         User user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .firstName(request.firstName())
+                .lastName(request.lastName())
                 .role(Role.USER)
                 .enabled(true)
                 .build();
@@ -91,10 +91,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
-                .build();
+        return new AuthResponse(accessToken, refreshToken.getToken());
     }
 
     @Override
@@ -103,13 +100,13 @@ public class AuthServiceImpl implements AuthService {
         // This call throws BadCredentialsException if email/password are wrong —
         // that exception propagates to GlobalExceptionHandler → 401.
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
         // At this point authentication succeeded — load the full User entity for token generation
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "User not found: " + request.getEmail()));
+                        "User not found: " + request.email()));
 
         log.info("User logged in: {}", user.getEmail());
 
@@ -117,17 +114,14 @@ public class AuthServiceImpl implements AuthService {
         // createRefreshToken handles deleting any existing token for this user first
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
-                .build();
+        return new AuthResponse(accessToken, refreshToken.getToken());
     }
 
     @Override
     @Transactional
     public AuthResponse refreshToken(RefreshTokenRequest request) {
         // Throws InvalidTokenException if token is not in the DB
-        RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken());
+        RefreshToken refreshToken = refreshTokenService.findByToken(request.refreshToken());
 
         // Throws TokenExpiredException (and deletes the token) if it's past its expiresAt
         refreshTokenService.verifyExpiration(refreshToken);
@@ -140,17 +134,14 @@ public class AuthServiceImpl implements AuthService {
 
         log.debug("Token refreshed for user: {}", newRefreshToken.getUser().getEmail());
 
-        return AuthResponse.builder()
-                .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken.getToken())
-                .build();
+        return new AuthResponse(newAccessToken, newRefreshToken.getToken());
     }
 
     @Override
     @Transactional
     public void logout(RefreshTokenRequest request) {
         // Throws InvalidTokenException if token is not found — prevents silent no-ops
-        RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken());
+        RefreshToken refreshToken = refreshTokenService.findByToken(request.refreshToken());
 
         refreshTokenService.deleteByUser(refreshToken.getUser());
         log.info("User logged out: {}", refreshToken.getUser().getEmail());

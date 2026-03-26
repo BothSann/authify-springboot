@@ -75,11 +75,11 @@ public class PasswordResetService {
      */
     @Transactional
     public void initiatePasswordReset(ForgotPasswordRequest request) {
-        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+        Optional<User> userOpt = userRepository.findByEmail(request.email());
 
         if (userOpt.isEmpty()) {
             // Silent no-op — do not reveal whether the email exists
-            log.debug("Password reset requested for unknown email: {}", request.getEmail());
+            log.debug("Password reset requested for unknown email: {}", request.email());
             return;
         }
 
@@ -115,7 +115,7 @@ public class PasswordResetService {
     @Transactional
     public void resetPassword(PasswordResetRequest request) {
         PasswordResetToken resetToken = passwordResetTokenRepository
-                .findByToken(request.getToken())
+                .findByToken(request.token())
                 .orElseThrow(() -> new InvalidTokenException(
                         "Invalid or unknown password reset token."));
 
@@ -133,7 +133,7 @@ public class PasswordResetService {
         User user = resetToken.getUser();
 
         // BCrypt the new password before storing — never persist plaintext
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
 
         // Mark the token as used — prevents replay attacks
         resetToken.setUsed(true);
